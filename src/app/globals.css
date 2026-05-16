@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Shared body-background token. Avoids repeating the same dark hex literal
+   across header, footer, card focus offsets, etc. */
+:root {
+  --bg: #ffffff;
+}
+
+.dark {
+  --bg: #07091a;
+}
+
+/* Tell the UA to render native form widgets (selects, scrollbars) with the
+   matching system palette in each theme. Fixes light dropdowns on dark pages. */
+html {
+  color-scheme: light dark;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-feature-settings: "rlig" 1, "calt" 1;
+  background: var(--bg);
+  color: #0b1020;
+}
+
+.dark body {
+  color: #e6e8f2;
+}
+
+.bg-aurora {
+  background:
+    radial-gradient(60% 80% at 50% 0%, rgba(47, 100, 224, 0.18) 0%, rgba(47, 100, 224, 0) 60%),
+    radial-gradient(40% 60% at 100% 20%, rgba(132, 90, 223, 0.18) 0%, rgba(0, 0, 0, 0) 60%),
+    radial-gradient(50% 70% at 0% 30%, rgba(20, 184, 166, 0.14) 0%, rgba(0, 0, 0, 0) 60%);
+}
+
+.dark .bg-aurora {
+  background:
+    radial-gradient(60% 80% at 50% 0%, rgba(47, 100, 224, 0.25) 0%, rgba(0, 0, 0, 0) 60%),
+    radial-gradient(40% 60% at 100% 20%, rgba(132, 90, 223, 0.22) 0%, rgba(0, 0, 0, 0) 60%),
+    radial-gradient(50% 70% at 0% 30%, rgba(20, 184, 166, 0.18) 0%, rgba(0, 0, 0, 0) 60%);
+}

@@ -1,0 +1,13 @@
+{
+  "name": "CertFinder",
+  "short_name": "CertFinder",
+  "description": "Free certification programs, verified weekly",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07091a",
+  "theme_color": "#2f64e0",
+  "icons": [
+    { "src": "/icon", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-icon", "sizes": "180x180", "type": "image/png" }
+  ]
+}

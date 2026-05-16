@@ -1,0 +1,12 @@
+[model]
+provider = "openai"
+name = "gpt-5.5"
+reasoning = "high"
+
+[runtime]
+parallel_tool_use = true
+auto_approve_safe_edits = false
+
+[project]
+name = "certification-website"
+description = "Free certification listing site (Next.js 16 App Router + React 19 + Tailwind v4)"
