@@ -166,7 +166,7 @@ export default function PathBuilder({ certifications }: PathBuilderProps) {
     // Defer focus until after the quiz re-renders.
     requestAnimationFrame(() => {
       firstLegendRef.current?.focus();
-      firstLegendRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      firstLegendRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
     });
   }, [updateUrl]);
 
