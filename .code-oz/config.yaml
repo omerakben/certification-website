@@ -1,0 +1,68 @@
+version: 0.20.3-alpha.0
+profile: greenfield
+defaultProvider: claude
+models:
+  primary: claude-opus-4-7
+  reviewer: gpt-5.5
+budgets:
+  global:
+    maxTurns: 100
+    maxProviderCalls: 50
+    maxTokensEstimate: 2000000
+    maxReviewRounds: 4
+    maxToolCallsPerTurn: 10
+    toolCallBudgetMultiplier: 1.5
+    maxWallTimeMinutes: 240
+    softWarnAtRatio: 0.75
+    priceTable:
+      claude:claude-opus-4-7:
+        inputPerMTok: 5
+        outputPerMTok: 25
+      claude:claude-sonnet-4-6:
+        inputPerMTok: 3
+        outputPerMTok: 15
+      claude:claude-haiku-4-5-20251001:
+        inputPerMTok: 1
+        outputPerMTok: 5
+  perPhase:
+    define:
+      maxTurns: 30
+      maxProviderCalls: 15
+      maxTokensEstimate: 300000
+    plan:
+      maxTurns: 30
+      maxProviderCalls: 15
+      maxTokensEstimate: 300000
+    build:
+      maxTurns: 60
+      maxProviderCalls: 30
+      maxTokensEstimate: 1500000
+    verify:
+      maxTurns: 30
+      maxProviderCalls: 30
+      maxTokensEstimate: 600000
+    review:
+      maxTurns: 60
+      maxProviderCalls: 30
+      maxTokensEstimate: 1500000
+    ship:
+      maxTurns: 5
+      maxProviderCalls: 2
+      maxTokensEstimate: 50000
+    audit:
+      maxTurns: 30
+      maxProviderCalls: 15
+      maxTokensEstimate: 300000
+permissions:
+  allowEscapeHatch: false
+  requireApprovalForBuild: true
+phases:
+  define:
+    askMe:
+      maxRounds: 8
+      readySignal: <spec-ready/>
+      onMaxRounds: finalize
+      maxFinalizeTurns: 1
+      maxRepairTurns: 1
+  scientist:
+    retroSeedDefine: false

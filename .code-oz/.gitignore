@@ -1,0 +1,10 @@
+# code-oz runtime artifacts. Per-run state and worktrees are gitignored by
+# default; sharing a run is an explicit bundle/export step (W4+).
+runs/
+state/active.json
+state/runs/
+
+# Tooling and editor scratch
+*.tmp
+*.bak
+.DS_Store
