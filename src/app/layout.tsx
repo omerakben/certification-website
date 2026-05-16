@@ -6,8 +6,7 @@ import SiteHeader from '@/components/site-header';
 import SiteFooter from '@/components/site-footer';
 import ThemeScript from '@/components/theme-script';
 import StructuredData from '@/components/structured-data';
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://certfinder.app';
+import { SITE_URL } from '@/lib/site';
 
 const DESCRIPTION =
   'Hand-curated index of free certifications from Google, Microsoft, AWS, IBM, Anthropic, OpenAI, freeCodeCamp, HubSpot, and HarvardX. Verified weekly so links keep working.';
@@ -15,7 +14,7 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'CertFinder — Free certifications, verified weekly',
+    default: 'CertFinder: Free certifications, verified weekly',
     template: '%s · CertFinder',
   },
   description: DESCRIPTION,
@@ -50,20 +49,20 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: SITE_URL,
     siteName: 'CertFinder',
-    title: 'CertFinder — Free certifications, verified weekly',
+    title: 'CertFinder: Free certifications, verified weekly',
     description: DESCRIPTION,
     images: [
       {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'CertFinder — Free certifications, verified weekly',
+        alt: 'CertFinder: Free certifications, verified weekly',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CertFinder — Free certifications, verified weekly',
+    title: 'CertFinder: Free certifications, verified weekly',
     description: DESCRIPTION,
     images: ['/opengraph-image'],
   },

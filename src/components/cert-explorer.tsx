@@ -264,7 +264,7 @@ export default function CertExplorer({ initialCertifications }: CertExplorerProp
         </div>
 
         <div className="mt-3 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
-          {/* Scoped live region — only the count text re-announces. */}
+          {/* Scoped live region: only the count text re-announces. */}
           <p role="status" aria-live="polite" id={countId} className="m-0">
             {countLabel}
           </p>

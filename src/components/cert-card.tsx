@@ -1,57 +1,9 @@
 import Link from 'next/link';
+import FreeProofBadge from '@/components/free-proof-badge';
+import { formatDate, levelStyles, providerGradient, providerInitial } from '@/lib/certifications/format';
 import type { Certification } from '@/lib/certifications/schema';
 
 const MAX_VISIBLE_SKILLS = 5;
-
-// Stable, restrained palette for provider avatar gradients.
-// Each entry is [from, to] Tailwind classes. Chosen for AA contrast against white text.
-// Note: rose/pink intentionally omitted so the avatar never visually fuses with the
-// rose Advanced-level chip (see audit M7).
-const PROVIDER_PALETTE: Array<readonly [string, string]> = [
-  ['from-blue-500', 'to-indigo-600'],
-  ['from-emerald-500', 'to-teal-600'],
-  ['from-fuchsia-500', 'to-purple-600'],
-  ['from-amber-500', 'to-orange-600'],
-  ['from-cyan-500', 'to-sky-600'],
-  ['from-violet-500', 'to-indigo-600'],
-  ['from-lime-500', 'to-emerald-600'],
-];
-
-function providerGradient(provider: string): string {
-  // Deterministic FNV-1a-ish hash so the same provider always gets the same color.
-  let hash = 0;
-  for (let i = 0; i < provider.length; i++) {
-    hash = (hash * 31 + provider.charCodeAt(i)) >>> 0;
-  }
-  const entry = PROVIDER_PALETTE[hash % PROVIDER_PALETTE.length] ?? PROVIDER_PALETTE[0]!;
-  const [from, to] = entry;
-  return `${from} ${to}`;
-}
-
-function providerInitial(provider: string): string {
-  const trimmed = provider.trim();
-  return trimmed ? trimmed.charAt(0).toUpperCase() : '?';
-}
-
-function levelStyles(level: Certification['level']): string {
-  switch (level) {
-    case 'Beginner':
-      return 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-400/20';
-    case 'Intermediate':
-      return 'bg-amber-50 text-amber-800 ring-1 ring-inset ring-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-400/20';
-    case 'Advanced':
-      return 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-400/20';
-    default:
-      return 'bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-200 dark:bg-white/5 dark:text-gray-300 dark:ring-white/10';
-  }
-}
-
-function formatVerifiedDate(iso: string): string {
-  // Render YYYY-MM-DD as a readable month/day/year without locale surprises.
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-}
 
 export default function CertCard({ certification }: { certification: Certification }) {
   const {
@@ -59,10 +11,12 @@ export default function CertCard({ certification }: { certification: Certificati
     name,
     description,
     link,
+    slug,
     skills,
     verifiedFreeAt,
     level,
     duration,
+    freeAccess,
   } = certification;
 
   const visibleSkills = skills.slice(0, MAX_VISIBLE_SKILLS);
@@ -84,13 +38,16 @@ export default function CertCard({ certification }: { certification: Certificati
           <p className="truncate text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
             {provider}
           </p>
-          {level ? (
-            <span
-              className={`mt-1 inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${levelStyles(level)}`}
-            >
-              {level}
-            </span>
-          ) : null}
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            {level ? (
+              <span
+                className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${levelStyles(level)}`}
+              >
+                {level}
+              </span>
+            ) : null}
+            <FreeProofBadge type={freeAccess.type} />
+          </div>
         </div>
       </header>
 
@@ -134,22 +91,29 @@ export default function CertCard({ certification }: { certification: Certificati
           <CheckBadgeIcon />
           <dt className="sr-only">Verified free on</dt>
           <dd>
-            Verified <time dateTime={verifiedFreeAt}>{formatVerifiedDate(verifiedFreeAt)}</time>
+            Verified <time dateTime={verifiedFreeAt}>{formatDate(verifiedFreeAt)}</time>
           </dd>
         </div>
       </dl>
 
-      <div className="mt-5 pt-4 border-t border-gray-100 dark:border-white/5">
+      <div className="mt-5 flex flex-col gap-3 border-t border-gray-100 pt-4 dark:border-white/5">
         <Link
+          href={`/certifications/${slug}`}
+          className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-brand-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 motion-reduce:transition-none"
+          aria-label={`View CertFinder guide for ${name}`}
+        >
+          View guide
+          <ArrowRightIcon />
+        </Link>
+        <a
           href={link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-md text-sm font-medium text-brand-600 transition-colors duration-200 hover:text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/80 focus-visible:ring-offset-0 dark:text-brand-300 dark:hover:text-brand-200 motion-reduce:transition-none"
-          aria-label={`Learn more about ${name} (opens in new tab)`}
+          className="inline-flex min-h-[44px] items-center justify-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900 dark:focus-visible:ring-offset-slate-950 motion-reduce:transition-none"
+          aria-label={`Open ${name} on ${provider} (opens in new tab)`}
         >
-          Learn more
-          <ArrowRightIcon />
-        </Link>
+          Open on {provider} ↗
+        </a>
       </div>
     </article>
   );

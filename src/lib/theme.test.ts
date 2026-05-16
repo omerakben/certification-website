@@ -37,7 +37,7 @@ describe('theme utilities', () => {
     window.localStorage.clear();
     document.documentElement.classList.remove('dark');
     // Reset any matchMedia stub.
-    // @ts-expect-error — we intentionally remove the stub.
+    // @ts-expect-error: we intentionally remove the stub.
     delete window.matchMedia;
   });
 

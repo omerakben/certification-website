@@ -28,6 +28,18 @@ export default function SiteHeader() {
           >
             Browse
           </Link>
+          <Link
+            href="/builder"
+            className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors duration-200 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:text-gray-300 dark:hover:text-white dark:focus-visible:ring-offset-[var(--bg)] motion-reduce:transition-none"
+          >
+            Build
+          </Link>
+          <Link
+            href="/verified"
+            className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors duration-200 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:text-gray-300 dark:hover:text-white dark:focus-visible:ring-offset-[var(--bg)] motion-reduce:transition-none"
+          >
+            Verified
+          </Link>
           <div className="ml-1 sm:ml-2">
             <ThemeToggle />
           </div>

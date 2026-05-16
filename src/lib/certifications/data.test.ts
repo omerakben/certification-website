@@ -10,20 +10,33 @@ describe('Certifications data', () => {
   test('each entry should have required fields', () => {
     Certifications.forEach((cert) => {
       expect(cert).toHaveProperty('id');
+      expect(cert).toHaveProperty('slug');
       expect(cert).toHaveProperty('provider');
       expect(cert).toHaveProperty('name');
       expect(cert).toHaveProperty('description');
       expect(cert).toHaveProperty('link');
       expect(cert).toHaveProperty('skills');
+      expect(cert).toHaveProperty('tracks');
+      expect(cert).toHaveProperty('estimatedHours');
+      expect(cert).toHaveProperty('careerFit');
+      expect(cert).toHaveProperty('outcomes');
+      expect(cert).toHaveProperty('bestFor');
+      expect(cert).toHaveProperty('credentialType');
+      expect(cert).toHaveProperty('freeAccess');
       expect(cert).toHaveProperty('verifiedFreeAt');
 
       // Validate types
       expect(typeof cert.id).toBe('number');
+      expect(typeof cert.slug).toBe('string');
       expect(typeof cert.provider).toBe('string');
       expect(typeof cert.name).toBe('string');
       expect(typeof cert.description).toBe('string');
       expect(typeof cert.link).toBe('string');
       expect(Array.isArray(cert.skills)).toBe(true);
+      expect(Array.isArray(cert.tracks)).toBe(true);
+      expect(Array.isArray(cert.outcomes)).toBe(true);
+      expect(typeof cert.estimatedHours).toBe('number');
+      expect(typeof cert.freeAccess.type).toBe('string');
       expect(typeof cert.verifiedFreeAt).toBe('string');
 
       // Validate link is a URL
@@ -35,6 +48,13 @@ describe('Certifications data', () => {
     const ids = Certifications.map((cert) => cert.id);
     const uniqueIds = new Set(ids);
     expect(ids.length).toBe(uniqueIds.size);
+  });
+
+  test('should contain 18 unique slugs', () => {
+    const slugs = Certifications.map((cert) => cert.slug);
+    const uniqueSlugs = new Set(slugs);
+    expect(slugs).toHaveLength(18);
+    expect(slugs.length).toBe(uniqueSlugs.size);
   });
 
   test('should cover at least 5 distinct providers', () => {
@@ -49,6 +69,22 @@ describe('Certifications data', () => {
         expect(typeof skill).toBe('string');
         expect(skill.length).toBeGreaterThan(0);
       });
+    });
+  });
+
+  test('every entry has valid free access and at least two outcomes', () => {
+    const freeAccessTypes = new Set([
+      'free-certificate',
+      'free-course-paid-certificate',
+      'financial-aid',
+      'free-learning-paid-exam',
+      'free-badge',
+      'free-event-voucher',
+    ]);
+
+    Certifications.forEach((cert) => {
+      expect(freeAccessTypes.has(cert.freeAccess.type)).toBe(true);
+      expect(cert.outcomes.length).toBeGreaterThanOrEqual(2);
     });
   });
 
@@ -67,11 +103,25 @@ describe('Certifications data', () => {
 describe('CertificationSchema validation', () => {
   const validCert = {
     id: 99,
+    slug: 'acme-cloud-pro',
     provider: 'Acme',
     name: 'Acme Cloud Pro',
     description: 'A valid record used as a baseline for negative tests.',
     link: 'https://example.com/cert',
     skills: ['Cloud'],
+    tracks: ['cloud'],
+    estimatedHours: 10,
+    careerFit: ['Cloud learner'],
+    outcomes: ['Explain cloud basics', 'Compare cloud services'],
+    bestFor: ['Beginners'],
+    credentialType: 'certificate',
+    freeAccess: {
+      type: 'free-certificate',
+      summary: 'The certificate is free after passing the required assessment.',
+      steps: ['Create an account', 'Pass the assessment'],
+      proofUrl: 'https://example.com/proof',
+      verifiedAt: '2026-05-15',
+    },
     verifiedFreeAt: '2026-05-15',
   };
 

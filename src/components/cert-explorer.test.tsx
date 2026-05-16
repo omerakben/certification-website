@@ -4,51 +4,82 @@ import userEvent from '@testing-library/user-event';
 import CertExplorer from '@/components/cert-explorer';
 import type { Certification } from '@/lib/certifications/schema';
 
+function makeCert(overrides: Partial<Certification>): Certification {
+  return {
+    id: 99,
+    slug: 'test-cert',
+    provider: 'Test',
+    name: 'Test Cert',
+    description: 'A test certification',
+    link: 'https://example.com',
+    skills: ['Test'],
+    tracks: ['foundations'],
+    estimatedHours: 5,
+    careerFit: ['Tester'],
+    outcomes: ['Learn a test skill', 'Apply a test skill'],
+    bestFor: ['Test learners'],
+    credentialType: 'certificate',
+    freeAccess: {
+      type: 'free-certificate',
+      summary: 'This test certificate is free.',
+      steps: ['Open the test page'],
+      proofUrl: 'https://example.com/proof',
+      verifiedAt: '2026-05-15',
+    },
+    verifiedFreeAt: '2026-05-15',
+    ...overrides,
+  };
+}
+
 const mockCertifications: Certification[] = [
-  {
+  makeCert({
     id: 1,
+    slug: 'azure-fundamentals',
     provider: 'Microsoft',
     name: 'Azure Fundamentals',
     description: 'Cloud concepts on Azure.',
     link: 'https://learn.microsoft.com/azure-fundamentals',
     skills: ['Azure', 'Cloud'],
-    verifiedFreeAt: '2026-05-15',
+    tracks: ['cloud'],
     level: 'Beginner',
     lastUpdated: '2026-05-15',
-  },
-  {
+  }),
+  makeCert({
     id: 2,
+    slug: 'azure-ai-engineer',
     provider: 'Microsoft',
     name: 'Azure AI Engineer Associate',
     description: 'Build AI solutions on Azure.',
     link: 'https://learn.microsoft.com/azure-ai-engineer',
     skills: ['Azure', 'AI'],
-    verifiedFreeAt: '2026-05-15',
+    tracks: ['ai', 'cloud'],
     level: 'Advanced',
     lastUpdated: '2026-05-15',
-  },
-  {
+  }),
+  makeCert({
     id: 3,
+    slug: 'google-data-analytics',
     provider: 'Google',
     name: 'Google Data Analytics',
     description: 'Hands-on data analytics path.',
     link: 'https://www.coursera.org/google-data-analytics',
     skills: ['Data', 'SQL'],
-    verifiedFreeAt: '2026-05-15',
+    tracks: ['data'],
     level: 'Beginner',
     lastUpdated: '2026-05-15',
-  },
-  {
+  }),
+  makeCert({
     id: 4,
+    slug: 'anthos-service-mesh',
     provider: 'Google',
     name: 'Anthos Service Mesh Advanced',
     description: 'Advanced service mesh administration.',
     link: 'https://www.coursera.org/google-anthos',
     skills: ['Kubernetes', 'Networking'],
-    verifiedFreeAt: '2026-05-15',
+    tracks: ['cloud'],
     level: 'Advanced',
     lastUpdated: '2026-05-15',
-  },
+  }),
 ];
 
 function renderExplorer() {

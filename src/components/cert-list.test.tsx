@@ -4,34 +4,54 @@ import CertList from '@/components/cert-list';
 import type { Certification } from '@/lib/certifications/schema';
 
 describe('CertList component', () => {
-  const mockCertifications: Certification[] = [
-    {
-      id: 1,
-      provider: 'Google',
-      name: 'Test Cert 1',
+  function makeCert(overrides: Partial<Certification>): Certification {
+    return {
+      id: 99,
+      slug: 'test-cert',
+      provider: 'Test',
+      name: 'Test Cert',
       description: 'A test certification',
       link: 'https://example.com',
       skills: ['Test'],
+      tracks: ['foundations'],
+      estimatedHours: 5,
+      careerFit: ['Tester'],
+      outcomes: ['Learn a test skill', 'Apply a test skill'],
+      bestFor: ['Test learners'],
+      credentialType: 'certificate',
+      freeAccess: {
+        type: 'free-certificate',
+        summary: 'This test certificate is free.',
+        steps: ['Open the test page'],
+        proofUrl: 'https://example.com/proof',
+        verifiedAt: '2026-05-15',
+      },
       verifiedFreeAt: '2026-05-15',
-    },
-    {
+      ...overrides,
+    };
+  }
+
+  const mockCertifications: Certification[] = [
+    makeCert({
+      id: 1,
+      slug: 'test-cert-1',
+      provider: 'Google',
+      name: 'Test Cert 1',
+    }),
+    makeCert({
       id: 2,
+      slug: 'test-cert-2',
       provider: 'Google',
       name: 'Test Cert 2',
       description: 'Another test certification',
-      link: 'https://example.com',
-      skills: ['Test'],
-      verifiedFreeAt: '2026-05-15',
-    },
-    {
+    }),
+    makeCert({
       id: 3,
+      slug: 'test-cert-3',
       provider: 'Microsoft',
       name: 'Test Cert 3',
       description: 'Yet another test certification',
-      link: 'https://example.com',
-      skills: ['Test'],
-      verifiedFreeAt: '2026-05-15',
-    },
+    }),
   ];
 
   test('renders without crashing', () => {

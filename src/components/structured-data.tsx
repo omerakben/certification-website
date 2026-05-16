@@ -1,5 +1,6 @@
 import { Certifications } from '@/lib/certifications/data';
 import type { Certification } from '@/lib/certifications/schema';
+import { SITE_URL } from '@/lib/site';
 
 interface CourseOffer {
   '@type': 'Offer';
@@ -13,11 +14,12 @@ interface CourseSchema {
   name: string;
   description: string;
   url: string;
+  sameAs: string[];
   provider: {
     '@type': 'Organization';
     name: string;
   };
-  offers: CourseOffer;
+  offers?: CourseOffer;
   educationalLevel?: string;
   timeRequired?: string;
   teaches?: string[];
@@ -43,18 +45,26 @@ function buildCourseSchema(cert: Certification): CourseSchema {
     '@type': 'Course',
     name: cert.name,
     description: cert.description,
-    url: cert.link,
+    url: `${SITE_URL}/certifications/${cert.slug}`,
+    sameAs: [cert.link],
     provider: {
       '@type': 'Organization',
       name: cert.provider,
     },
-    offers: {
+  };
+
+  if (
+    cert.freeAccess.type === 'free-certificate' ||
+    cert.freeAccess.type === 'free-badge' ||
+    cert.freeAccess.type === 'free-course-paid-certificate'
+  ) {
+    course.offers = {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
-    },
-  };
+    };
+  }
 
   if (cert.level) course.educationalLevel = cert.level;
   if (cert.duration) course.timeRequired = cert.duration;
